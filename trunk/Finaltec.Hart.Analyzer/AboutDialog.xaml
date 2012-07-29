@@ -31,7 +31,7 @@
             <TextBlock Margin="0,0,0,2">Used software</TextBlock>
             <Border BorderThickness="1" Background="White" BorderBrush="DarkGray" Grid.Column="1" Grid.Row="1" Padding="5" Margin="0,0,20,0">
                 <TextBlock TextWrapping="Wrap">
-         Finaltec.Communication.HartLite (v0.5.2)<LineBreak />
+         Finaltec.Communication.HartLite (v0.5.3)<LineBreak />
          log4net (v1.2.10.0)<LineBreak />
          NUnit (v2.5.2.9222)<LineBreak />
          <LineBreak />
