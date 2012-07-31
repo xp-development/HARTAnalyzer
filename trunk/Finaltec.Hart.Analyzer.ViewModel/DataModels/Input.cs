@@ -27,7 +27,7 @@ namespace Finaltec.Hart.Analyzer.ViewModel.DataModels
             set
             {
                 _rawValue = value;
-                Input input = _parentList[_parentList.Count -1];
+                Input input = _parentList[_parentList.Count - 1];
 
                 if (!string.IsNullOrEmpty(input.RawValue))
                     _parentList.Add(new Input(_parentList, InputType.Byte));

@@ -63,7 +63,13 @@
                 <MenuItem Header="Checksum" Name="mnuChecksum" IsCheckable="True" IsChecked="{Binding Filter.DisplayChecksum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </MenuItem>
 
-            <MenuItem Header="_About" Command="{Binding AboutCommand}" />
+            <MenuItem Header="_Info">
+                <MenuItem Header="_Help" Command="{Binding HelpCommand}" />
+                <MenuItem Header="_Give Feedback" Command="{Binding GiveFeedbackCommand}" />
+                <MenuItem Header="_Check for Updates" Command="{Binding CheckForUpdatesCommand}" />
+                <Separator />
+                <MenuItem Header="_About" Command="{Binding AboutCommand}" />
+            </MenuItem>
         </Menu>
         
         <ListView ItemsSource="{Binding DataTransferModel.Output}" Background="Transparent" Margin="0" VerticalContentAlignment="Top" AlternationCount="2" 
