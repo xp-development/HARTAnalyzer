@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using Cinch;
 using Finaltec.Communication.HartLite;
 using Finaltec.Hart.Analyzer.ViewModel.Common;
@@ -95,27 +97,12 @@ namespace Finaltec.Hart.Analyzer.ViewModel
             }
         }
 
-        /// <summary>
-        /// Gets or sets the connect disconnect command.
-        /// </summary>
-        /// <value>The connect disconnect command.</value>
         public SimpleCommand<object, object> ConnectDisconnectCommand { get; private set; }
-        /// <summary>
-        /// Gets or sets the send command.
-        /// </summary>
-        /// <value>The send command.</value>
         public SimpleCommand<object, object> SendCommand { get; private set; }
-        /// <summary>
-        /// Gets or sets the display connection settings command.
-        /// </summary>
-        /// <value>The display connection settings command.</value>
         public SimpleCommand<object, object> DisplayConnectionSettingsCommand { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the about command.
-        /// </summary>
-        /// <value>The about command.</value>
         public SimpleCommand<object, object> AboutCommand { get; private set; }
+        public SimpleCommand<object, object> HelpCommand { get; private set; }
+        public SimpleCommand<object, object> GiveFeedbackCommand { get; private set; }
 
         [ImportingConstructor]
         public MainViewModel(IUIVisualizerService visualizerService, IViewAwareStatusWindow window, IMessageBoxService messageBoxService, IHartCommunicationLiteEx hartCommunication)
@@ -150,6 +137,13 @@ namespace Finaltec.Hart.Analyzer.ViewModel
             SendCommand = new SimpleCommand<object, object>(obj => IsConnected, SendCommandExecute);
             DisplayConnectionSettingsCommand = new SimpleCommand<object, object>(obj => !IsConnected, DisplayConnectionSettingsCommandExecute);
             AboutCommand = new SimpleCommand<object, object>(AboutCommandExecute);
+            HelpCommand = new SimpleCommand<object, object>(obj => NavigateTo("http://hartanalyzer.codeplex.com/documentation/"));
+            GiveFeedbackCommand = new SimpleCommand<object, object>(obj => NavigateTo("http://hartanalyzer.codeplex.com/discussions/"));
+        }
+
+        private static void NavigateTo(string httpUrl)
+        {
+            Process.Start(new ProcessStartInfo(httpUrl));
         }
 
         /// <summary>
