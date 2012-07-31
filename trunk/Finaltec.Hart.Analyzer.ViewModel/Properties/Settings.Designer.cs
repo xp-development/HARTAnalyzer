@@ -229,7 +229,7 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public double WindowTop {
             get {
                 return ((double)(this["WindowTop"]));
@@ -241,7 +241,7 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public double WindowLeft {
             get {
                 return ((double)(this["WindowLeft"]));
