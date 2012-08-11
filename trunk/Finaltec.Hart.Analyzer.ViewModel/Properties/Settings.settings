@@ -59,5 +59,20 @@
     <Setting Name="WindowLeft" Type="System.Double" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
+    <Setting Name="LastUpdateCheck" Type="System.Nullable&lt;System.DateTime&gt;" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Website" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hartanalyzer.codeplex.com/</Value>
+    </Setting>
+    <Setting Name="WebsiteHelp" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hartanalyzer.codeplex.com/documentation/</Value>
+    </Setting>
+    <Setting Name="WebsiteGiveFeedback" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hartanalyzer.codeplex.com/discussions/</Value>
+    </Setting>
+    <Setting Name="WebsiteDownloads" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://hartanalyzer.codeplex.com/releases</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -5,7 +5,7 @@
               StartupUri="MainWindow.xaml"
              Startup="OnStartup">
     <Application.Resources>
-        <ImageBrush x:Key="DefaultWindowBackground" ImageSource="/Images/windowBackground.jpg" Stretch="Fill" />
+        <ImageBrush x:Key="DefaultWindowBackground" ImageSource="/Images/windowBackground.png" Stretch="Fill" />
         <ImageBrush x:Key="DefaultMenuBackground" ImageSource="/Images/menuBackground.jpg" Stretch="Fill" />
 
         <LinearGradientBrush x:Key="WindowBorder">

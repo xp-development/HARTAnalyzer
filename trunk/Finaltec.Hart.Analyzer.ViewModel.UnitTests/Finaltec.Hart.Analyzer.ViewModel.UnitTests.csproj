@@ -49,14 +49,17 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cinch.WPF">
+    <Reference Include="Cinch.WPF, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\packages\Cinch.2.0.1\lib\net40\Cinch.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Finaltec.Communication.HartLite, Version=0.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Finaltec.Communication.HartLite.dll</HintPath>
     </Reference>
-    <Reference Include="MEFedMVVM.WPF">
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.1.7.1.1\Lib\net40\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="MEFedMVVM.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b6db3dc4f5fba1e3, processorArchitecture=MSIL">
       <HintPath>..\packages\Cinch.2.0.1\lib\net40\MEFedMVVM.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -95,10 +98,18 @@
     <Compile Include="_DataTemplate\_Filter\Ctor.cs" />
     <Compile Include="_DataTemplate\_Filter\InvokePropertyChanged.cs" />
     <Compile Include="_MainViewModel\Ctor.cs" />
+    <Compile Include="TestVersionService.cs" />
+    <Compile Include="_MainViewModel\ViewLoaded.cs" />
     <Compile Include="_SendCommandModel\Ctor.cs" />
     <Compile Include="_SettingsDialogModel\Ctor.cs" />
+    <Compile Include="_UpdateViewModel\CurrentVersion.cs" />
+    <Compile Include="_UpdateViewModel\OnlineVersion.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Finaltec.Hart.Analyzer.Core\Finaltec.Hart.Analyzer.Core.csproj">
+      <Project>{34FB0B8E-1D56-43C8-8E61-C9E9D650929A}</Project>
+      <Name>Finaltec.Hart.Analyzer.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Finaltec.Hart.Analyzer.ViewModel\Finaltec.Hart.Analyzer.ViewModel.csproj">
       <Project>{1E2B3B8B-F964-423B-B13A-CA41C09A68D5}</Project>
       <Name>Finaltec.Hart.Analyzer.ViewModel</Name>
@@ -111,6 +122,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

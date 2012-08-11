@@ -11,7 +11,6 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Model
 #endif
     public class IsolatedHartCommunicationLite : IHartCommunicationLiteEx
     {
-        private bool _isOpen;
         private IAddress _currentAddress;
         public event ReceiveHandler Receive;
         public event SendingCommandHandler SendingCommand;
@@ -36,7 +35,6 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Model
 
         public OpenResult Open()
         {
-            _isOpen = true;
             _currentAddress = null;
 
             return OpenResult.Opened;
@@ -44,8 +42,6 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Model
 
         public CloseResult Close()
         {
-            _isOpen = false;
-
             return CloseResult.Closed;
         }
 

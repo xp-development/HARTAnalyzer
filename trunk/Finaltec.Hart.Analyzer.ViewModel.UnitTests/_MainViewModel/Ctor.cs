@@ -1,3 +1,4 @@
+using System;
 using Finaltec.Hart.Analyzer.ViewModel.DataModels;
 using Finaltec.Hart.Analyzer.ViewModel.DataTemplate;
 using Finaltec.Hart.Analyzer.ViewModel.Model;
@@ -11,7 +12,7 @@ namespace Finaltec.Hart.Analyzer.ViewModel.UnitTests._MainViewModel
         [Test]
         public void Usage()
         {
-            MainViewModel mainViewModel = new MainViewModel(new Cinch.TestUIVisualizerService(), new Cinch.TestViewAwareStatusWindow(), new Cinch.TestMessageBoxService(), new RealHartCommunicationLite());
+            MainViewModel mainViewModel = new MainViewModel(new Cinch.TestUIVisualizerService(), new Cinch.TestViewAwareStatusWindow(), new Cinch.TestMessageBoxService(), new RealHartCommunicationLite(), new TestVersionService(new Version(), new Version()));
             Assert.That(mainViewModel, Is.Not.Null);
 
             Assert.That(mainViewModel.IsConnected, Is.False);

@@ -47,7 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="_VersionService\GetCurrentVersion.cs" />
+    <Compile Include="_ScanningWebsiteVersionService\GetCurrentVersion.cs" />
+    <Compile Include="_ScanningWebsiteVersionService\GetOnlineVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

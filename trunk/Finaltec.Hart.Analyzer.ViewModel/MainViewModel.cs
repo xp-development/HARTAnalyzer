@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using Cinch;
 using Finaltec.Communication.HartLite;
+using Finaltec.Hart.Analyzer.Core;
 using Finaltec.Hart.Analyzer.ViewModel.Common;
 using Finaltec.Hart.Analyzer.ViewModel.DataModels;
 using Finaltec.Hart.Analyzer.ViewModel.DataTemplate;
@@ -30,6 +30,7 @@ namespace Finaltec.Hart.Analyzer.ViewModel
         private readonly IUIVisualizerService _visualizerService;
         private readonly IMessageBoxService _messageBoxService;
         private readonly IHartCommunicationLiteEx _hartCommunication;
+        private readonly IVersionService _versionService;
         private string _value;
         private readonly SynchronizationContext _synchronizationContext;
 
@@ -103,18 +104,33 @@ namespace Finaltec.Hart.Analyzer.ViewModel
         public SimpleCommand<object, object> AboutCommand { get; private set; }
         public SimpleCommand<object, object> HelpCommand { get; private set; }
         public SimpleCommand<object, object> GiveFeedbackCommand { get; private set; }
+        public SimpleCommand<object, object> CheckForUpdatesCommand { get; private set; }
 
         [ImportingConstructor]
-        public MainViewModel(IUIVisualizerService visualizerService, IViewAwareStatusWindow window, IMessageBoxService messageBoxService, IHartCommunicationLiteEx hartCommunication)
+        public MainViewModel(IUIVisualizerService visualizerService, IViewAwareStatusWindow window, IMessageBoxService messageBoxService, IHartCommunicationLiteEx hartCommunication, IVersionService versionService)
         {
+            _synchronizationContext = SynchronizationContext.Current;
+
             _settingsViewModel = new SettingsViewModel();
             _visualizerService = visualizerService;
             _messageBoxService = messageBoxService;
             _hartCommunication = hartCommunication;
+            _versionService = versionService;
+            _versionService.GetOnlineVersionResult += (sender, onlineVersion) =>
+                                                          {
+                                                              if (onlineVersion != new Version())
+                                                                  Settings.Default.LastUpdateCheck = DateTime.Now;
+
+                                                              if (versionService.GetCurrentVersion() < onlineVersion)
+                                                                  _synchronizationContext.Send(obj => _visualizerService.ShowDialog("UpdateViewModel", new UpdateViewModel(_versionService)), null);
+                                                          };
+
             window.ViewLoaded += () =>
                                      {
                                          if (Settings.Default.ShowOnStartup)
                                              _visualizerService.ShowDialog("SettingsViewModel", _settingsViewModel);
+
+                                         CheckUpdates(_versionService);
                                      };
             window.ViewWindowClosed += () =>
                                            {
@@ -123,9 +139,14 @@ namespace Finaltec.Hart.Analyzer.ViewModel
                                            };
             ReadSettings();
             DataTransferModel = DataTransferModel.GetInstance();
-            _synchronizationContext = SynchronizationContext.Current;
 
             InitCommands();
+        }
+
+        private static void CheckUpdates(IVersionService versionService)
+        {
+            if (!Settings.Default.LastUpdateCheck.HasValue || DateTime.Now > Settings.Default.LastUpdateCheck.Value.AddDays(7))
+                versionService.GetOnlineVersionAsync();
         }
 
         /// <summary>
@@ -137,8 +158,9 @@ namespace Finaltec.Hart.Analyzer.ViewModel
             SendCommand = new SimpleCommand<object, object>(obj => IsConnected, SendCommandExecute);
             DisplayConnectionSettingsCommand = new SimpleCommand<object, object>(obj => !IsConnected, DisplayConnectionSettingsCommandExecute);
             AboutCommand = new SimpleCommand<object, object>(AboutCommandExecute);
-            HelpCommand = new SimpleCommand<object, object>(obj => NavigateTo("http://hartanalyzer.codeplex.com/documentation/"));
-            GiveFeedbackCommand = new SimpleCommand<object, object>(obj => NavigateTo("http://hartanalyzer.codeplex.com/discussions/"));
+            HelpCommand = new SimpleCommand<object, object>(obj => NavigateTo(Settings.Default.WebsiteHelp));
+            GiveFeedbackCommand = new SimpleCommand<object, object>(obj => NavigateTo(Settings.Default.WebsiteGiveFeedback));
+            CheckForUpdatesCommand = new SimpleCommand<object, object>(obj => _visualizerService.ShowDialog("UpdateViewModel", new UpdateViewModel(_versionService)));
         }
 
         private static void NavigateTo(string httpUrl)
