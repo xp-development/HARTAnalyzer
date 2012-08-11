@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="SendCommandViewModel.cs" />
     <Compile Include="SettingsViewModel.cs" />
+    <Compile Include="UpdateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -118,6 +119,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Finaltec.Hart.Analyzer.Core\Finaltec.Hart.Analyzer.Core.csproj">
+      <Project>{34FB0B8E-1D56-43C8-8E61-C9E9D650929A}</Project>
+      <Name>Finaltec.Hart.Analyzer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

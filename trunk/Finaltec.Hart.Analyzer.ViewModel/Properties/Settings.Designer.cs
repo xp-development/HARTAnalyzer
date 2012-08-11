@@ -250,5 +250,52 @@ namespace Finaltec.Hart.Analyzer.ViewModel.Properties {
                 this["WindowLeft"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Nullable<System.DateTime> LastUpdateCheck {
+            get {
+                return ((global::System.Nullable<System.DateTime>)(this["LastUpdateCheck"]));
+            }
+            set {
+                this["LastUpdateCheck"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://hartanalyzer.codeplex.com/")]
+        public string Website {
+            get {
+                return ((string)(this["Website"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://hartanalyzer.codeplex.com/documentation/")]
+        public string WebsiteHelp {
+            get {
+                return ((string)(this["WebsiteHelp"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://hartanalyzer.codeplex.com/discussions/")]
+        public string WebsiteGiveFeedback {
+            get {
+                return ((string)(this["WebsiteGiveFeedback"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://hartanalyzer.codeplex.com/releases")]
+        public string WebsiteDownloads {
+            get {
+                return ((string)(this["WebsiteDownloads"]));
+            }
+        }
     }
 }

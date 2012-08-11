@@ -1,7 +1,9 @@
 ﻿<Window x:Class="Finaltec.Hart.Analyzer.View.AboutDialog"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               Title="About Finaltec Hart Analyzer" Background="#D5D5D5"
+               Title="About Hart Analyzer" 
+        xmlns:resx="clr-namespace:Finaltec.Hart.Analyzer.ViewModel.Properties;assembly=Finaltec.Hart.Analyzer.ViewModel"
+        Background="{StaticResource DefaultWindowBackground}"
                Icon="/Hart.Analyzer;component/Images/Icon.ico"
                MinWidth="500" MinHeight="350" WindowStartupLocation="CenterOwner"
                MaxWidth="500" MaxHeight="350">
@@ -40,7 +42,7 @@
         </StackPanel>
         <StatusBar Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource DefaultMenuBackground}">
             <StatusBarItem HorizontalAlignment="Right">
-                <Hyperlink FontSize="11" FontWeight="Bold" NavigateUri="http://hartanalyzer.codeplex.com/" RequestNavigate="Hyperlink_OnRequestNavigate" TextDecorations="None">hartanalyzer.codeplex.com</Hyperlink>
+                <Hyperlink FontSize="11" FontWeight="Bold" NavigateUri="{Binding Source={x:Static resx:Settings.Default}, Path=Website}" RequestNavigate="Hyperlink_OnRequestNavigate" TextDecorations="None">hartanalyzer.codeplex.com</Hyperlink>
             </StatusBarItem>
         </StatusBar>
     </Grid>
