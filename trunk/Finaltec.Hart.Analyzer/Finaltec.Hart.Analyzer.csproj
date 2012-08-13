@@ -165,6 +165,7 @@
     </Content>
     <Resource Include="Images\windowBackground.png" />
     <Resource Include="Resources\Icon.png" />
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -179,7 +180,9 @@ copy "$(ProjectDir)$(OutDir)Cinch.WPF.dll" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)Finaltec.Communication.HartLite.dll" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)Finaltec.Hart.Analyzer.exe.log4net" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)Finaltec.Hart.Analyzer.ViewModel.dll" "$(ProjectDir)..\Setup\content\"
+copy "$(ProjectDir)$(OutDir)Finaltec.Hart.Analyzer.Core.dll" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)Hart.Analyzer.exe" "$(ProjectDir)..\Setup\content\"
+copy "$(ProjectDir)$(OutDir)Hart.Analyzer.exe.config" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)log4net.dll" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)MEFedMVVM.WPF.dll" "$(ProjectDir)..\Setup\content\"
 copy "$(ProjectDir)$(OutDir)Microsoft.Expression.Interactions.dll" "$(ProjectDir)..\Setup\content\"
