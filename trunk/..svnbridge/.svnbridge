@@ -10,4 +10,12 @@ Hart.Analyzer.ncrunchsolution.user
 Hart.Analyzer.suo
 Hart.Analyzer.6.1.ReSharper.user
 Hart.Analyzer.sln.DotSettings.user
+</Value></Property><Property><Name>svn:ignore</Name><Value>_NCrunch_Hart.Analyzer
+Hart.Analyzer.5.1.ReSharper.user
+Hart.Analyzer.ncrunchsolution
+Hart.Analyzer.ncrunchsolution.user
+Hart.Analyzer.suo
+Hart.Analyzer.6.1.ReSharper.user
+Hart.Analyzer.sln.DotSettings.user
+_ReSharper.Hart.Analyzer
 </Value></Property></Properties></ItemProperties>
