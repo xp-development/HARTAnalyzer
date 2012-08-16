@@ -141,6 +141,15 @@ namespace Finaltec.Hart.Analyzer.ViewModel.DataModels
             return typeof(object);
         }
 
+        public void InvokePropertysChanged()
+        {
+            InvokePropertyChanged("RawValue");
+            InvokePropertyChanged("Type");
+            InvokePropertyChanged("IsValid");
+            InvokePropertyChanged("ValidateErrorMessage");
+            InvokePropertyChanged("DataBytes");
+        }
+
         /// <summary>
         /// Invokes the property changed.
         /// </summary>
