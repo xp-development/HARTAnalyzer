@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Cinch;
 using Finaltec.Hart.Analyzer.ViewModel;
+using Finaltec.Hart.Analyzer.ViewModel.DataModels;
+using InputType = Finaltec.Hart.Analyzer.ViewModel.DataModels.InputType;
 
 namespace Finaltec.Hart.Analyzer.View
 {
@@ -15,7 +18,7 @@ namespace Finaltec.Hart.Analyzer.View
     [PopupNameToViewLookupKeyMetadata("SendCommandViewModel", typeof(SendCommand))]
     public partial class SendCommand
     {
-        private List<RadioButton> _typeRadioButtons;
+        private readonly List<RadioButton> _typeRadioButtons;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SendCommand"/> class.
@@ -41,7 +44,7 @@ namespace Finaltec.Hart.Analyzer.View
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        private void CommandGotFocus(object sender, System.Windows.RoutedEventArgs e)
+        private void CommandGotFocus(object sender, RoutedEventArgs e)
         {
             tbCommand.SelectAll();
         }
@@ -53,7 +56,13 @@ namespace Finaltec.Hart.Analyzer.View
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void WindowLoaded(object sender, EventArgs e)
         {
-            ((SendCommandViewModel) DataContext).RawDataCleared += SwitchFocus;
+            ((SendCommandViewModel)DataContext).RawDataCleared += SwitchFocus;
+            DataObject.AddPastingHandler(lvDataList, OnPaste);
+        }
+
+        private void WindowUnloaded(object sender, RoutedEventArgs e)
+        {
+            DataObject.RemovePastingHandler(lvDataList, OnPaste);
         }
 
         /// <summary>
@@ -64,32 +73,19 @@ namespace Finaltec.Hart.Analyzer.View
             MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
         }
 
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TextBoxGotFocus(object sender, RoutedEventArgs e)
         {
             ListViewItem dependencyObject = FindParent<ListViewItem>((DependencyObject)sender);
             dependencyObject.IsSelected = true;
         }
 
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void TextBoxLostFocus(object sender, RoutedEventArgs e)
         {
             ListViewItem dependencyObject = FindParent<ListViewItem>((DependencyObject)sender);
             dependencyObject.IsSelected = false;
         }
 
-        private static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            DependencyObject dependencyObject = VisualTreeHelper.GetParent(child);
-            if (dependencyObject == null)
-                return null;
-
-            T parent = dependencyObject as T;
-            if (parent != null)
-                return parent;
-
-            return FindParent<T>(dependencyObject);
-        }
-
-        private void Window_KeyUp(object sender, KeyEventArgs e)
+        private void WindowKeyUp(object sender, KeyEventArgs e)
         {
             for (int i = 0; i < _typeRadioButtons.Count; i++)
             {
@@ -117,7 +113,7 @@ namespace Finaltec.Hart.Analyzer.View
             }
         }
 
-        private void ListView_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ListViewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ListView listView = (ListView)sender;
             if (listView.Items.Count == 1)
@@ -125,6 +121,19 @@ namespace Finaltec.Hart.Analyzer.View
                 TextBox textBox = GetVisualChild<TextBox>((DependencyObject) sender);
                 Keyboard.Focus(textBox);
             }
+        }
+
+        private static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject dependencyObject = VisualTreeHelper.GetParent(child);
+            if (dependencyObject == null)
+                return null;
+
+            T parent = dependencyObject as T;
+            if (parent != null)
+                return parent;
+
+            return FindParent<T>(dependencyObject);
         }
 
         private static T GetVisualChild<T>(DependencyObject parent) where T : Visual
@@ -135,18 +144,99 @@ namespace Finaltec.Hart.Analyzer.View
             for (int i = 0; i < numVisuals; i++)
             {
                 Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                {
-                    child = GetVisualChild<T>(v);
-                }
+                child = v as T ?? GetVisualChild<T>(v);
+                
                 if (child != null)
-                {
                     break;
-                }
             }
-            return child;
-        } 
 
+            return child;
+        }
+        
+        /// <summary>
+        /// This handle is binded by <see cref="WindowLoaded"/> and unbind by <see cref="WindowUnloaded"/>. 
+        /// </summary>
+        /// <param name="sender">The sender object who gets the paste event.</param>
+        /// <param name="e">Pasting event args.</param>
+        private void OnPaste(object sender, DataObjectPastingEventArgs e)
+        {
+            bool isText = e.SourceDataObject.GetDataPresent(DataFormats.Text, true);
+            if (!isText)
+                return;
+
+            string value = e.SourceDataObject.GetData(DataFormats.Text) as string;
+            if (string.IsNullOrEmpty(value))
+                return;
+
+            string[] dataParts = value.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+            if (dataParts.Length > 1)
+            {
+                foreach (string dataPart in dataParts)
+                {
+                    string data = dataPart.Replace("0x", string.Empty);
+                    InputDataType dataType = GetDataType(ref data);
+
+                    if (!data.StartsWith("0x"))
+                        data = data.Insert(0, "0x");
+
+                    SendCommandViewModel viewModel = (SendCommandViewModel)DataContext;
+                    Input input = viewModel.RawValues.FirstOrDefault(item => string.IsNullOrEmpty(item.RawValue));
+                    if (input != null)
+                    {
+                        input.Type = dataType;
+                        input.RawValue = data;
+                    }
+                }
+
+                //We need to clear the clipboard at the moment because they try to override the pasted stuff..
+                Clipboard.Clear();
+
+                foreach (Input input in ((SendCommandViewModel)DataContext).RawValues)
+                {
+                    input.InvokePropertysChanged();
+                }
+
+                e.Handled = true;
+                SwitchFocus();
+            }
+        }
+
+        /// <summary>
+        /// This method is used to find a simple datatype for the expected data input. <br />
+        /// Also the data will expended to a corret count of characters.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private InputDataType GetDataType(ref string data)
+        {
+            if (data.Length < 2)
+                data = data.PadLeft(2, '0');
+
+            if(data.Length > 2)
+            {
+                if (data.Length < 4)
+                    data = data.PadLeft(4, '0');
+
+                if (data.Length > 4)
+                {
+                    if (data.Length < 6)
+                        data = data.PadLeft(6, '0');
+
+                    if (data.Length > 6)
+                    {
+                        if (data.Length < 8)
+                            data = data.PadLeft(8, '0');
+
+                        return new InputDataType(InputType.UInt);
+                    }
+
+                    return new InputDataType(InputType.UInt24);
+                }
+
+                return new InputDataType(InputType.UShort);
+            }
+
+            return new InputDataType(InputType.Byte);
+        }
     }
 }
